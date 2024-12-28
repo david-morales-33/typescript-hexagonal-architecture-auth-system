@@ -1,5 +1,7 @@
+import { CredentialsPassword } from "../../Credentials/domain/CredentialsPassword";
+import { UserHashedPassword } from "./UserHashedPassword";
 
 export interface PasswordService {
-    encrypt(password: string): Promise<string>;
-    validate(passwordHashed: string, password: string): Promise<boolean>;
+    encrypt(password: CredentialsPassword): Promise<UserHashedPassword>;
+    validate(passwordHashed: UserHashedPassword, password: CredentialsPassword): Promise<boolean>;
 }
