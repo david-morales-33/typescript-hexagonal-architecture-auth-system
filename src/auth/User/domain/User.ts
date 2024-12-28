@@ -1,4 +1,5 @@
 import { CredentialsPassword } from "../../Credentials/domain/CredentialsPassword";
+import { Role } from "../../Role/domain/Role";
 import { PasswordService } from "./PasswordService";
 import { UserDTO } from "./UserDTO";
 import { UserEmail } from "./UserEmail";
@@ -11,17 +12,19 @@ export class User {
     constructor(
         public readonly id: UserId,
         public readonly email: UserEmail,
+        public readonly roleList: Role[],
         hashedPassword?: UserHashedPassword
     ) { this._hashedPassword = hashedPassword }
 
-    public static create(id: UserId,email: UserEmail): User {
-        return new User(id, email);
+    public static create(id: UserId, email: UserEmail, roleList: Role[]): User {
+        return new User(id, email, roleList);
     }
 
     public static fromPrimitives(data: UserDTO): User {
         return new User(
             new UserId(data.id),
-            new UserEmail(data.email)
+            new UserEmail(data.email),
+            data.roleList.map(entry => Role.fromPrimitives(entry))
         )
     }
 
@@ -35,6 +38,6 @@ export class User {
     }
 
     toPrimitives(): UserDTO {
-        return new UserDTO(this.id.value, this.email.value)
+        return new UserDTO(this.id.value, this.email.value, this.roleList.map(entry => entry.toPrimitives()))
     }
 }
