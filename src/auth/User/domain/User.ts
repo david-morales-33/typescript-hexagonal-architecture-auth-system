@@ -7,24 +7,29 @@ import { UserHashedPassword } from "./UserHashedPassword";
 import { UserId } from "./UserId";
 
 export class User {
-    private _hashedPassword?: UserHashedPassword
+    private _hashedPassword: UserHashedPassword | null;
 
     constructor(
         public readonly id: UserId,
         public readonly email: UserEmail,
         public readonly roleList: Role[],
-        hashedPassword?: UserHashedPassword
+        hashedPassword: UserHashedPassword | null
     ) { this._hashedPassword = hashedPassword }
 
+    public get hashedPassword(): UserHashedPassword | null {
+        return this._hashedPassword;
+    }
+
     public static create(id: UserId, email: UserEmail, roleList: Role[]): User {
-        return new User(id, email, roleList);
+        return new User(id, email, roleList, null);
     }
 
     public static fromPrimitives(data: UserDTO): User {
         return new User(
             new UserId(data.id),
             new UserEmail(data.email),
-            data.roleList.map(entry => Role.fromPrimitives(entry))
+            data.roleList.map(entry => Role.fromPrimitives(entry)),
+            null
         )
     }
 
