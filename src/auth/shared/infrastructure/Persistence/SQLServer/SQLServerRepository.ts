@@ -39,19 +39,6 @@ export abstract class SQLServerRepository {
         return recordset;
     }
 
-    protected createTVPTable(values: any[], tableType: string, columns: { name: string, type: paramType }[]) {
-        const table = new sql.Table(tableType);
-
-        columns.forEach(col => {
-            table.columns.add(col.name, col.type);
-        });
-
-        values.forEach(row => {
-            table.rows.add(...columns.map(col => row[col.name]));
-        });
-        return table;
-    }
-
     protected throwQueryError(message: string) {
         throw new Error(message)
     }
