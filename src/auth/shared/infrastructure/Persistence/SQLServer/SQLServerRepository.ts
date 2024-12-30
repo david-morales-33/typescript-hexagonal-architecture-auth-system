@@ -6,16 +6,14 @@ type paramType = | sql.ISqlTypeFactoryWithLength
     | sql.ISqlTypeFactoryWithScale
     | sql.ISqlTypeFactoryWithTvpType;
 
-export type dbParameters = {
+export type DbParameters = {
     name: string;
     type: paramType;
     value: any
 }
 export abstract class SQLServerRepository {
 
-    constructor(private _pool: Promise<ConnectionPool>) {}
-
-    protected abstract procedureStoreName(): string;
+    constructor(private _pool: Promise<ConnectionPool>) { }
 
     protected pool(): Promise<ConnectionPool> {
         return this._pool;
@@ -28,15 +26,17 @@ export abstract class SQLServerRepository {
         return (await this._pool).close()
     }
 
-    protected async execute(params: dbParameters[] | []): Promise<sql.IRecordSet<any>> {
-        const query = (await this.connection()).request();
+    protected storedProcedure(spName: string): (params: DbParameters[] | []) => Promise<sql.IRecordSet<any>> {
+        return async (params: DbParameters[] | []) => {
+            const query = (await this.connection()).request();
 
-        params.forEach(element => { query.input(element.name, element.type, element.value) });
+            params.forEach(element => { query.input(element.name, element.type, element.value) });
 
-        const { recordset, returnValue } = await query.execute(this.procedureStoreName());
-        if (returnValue !== 1)
-            this.throwQueryError(recordset[0]);
-        return recordset;
+            const { recordset, returnValue } = await query.execute(spName);
+            if (returnValue !== 1)
+                this.throwQueryError(recordset[0]);
+            return recordset;
+        }
     }
 
     protected throwQueryError(message: string) {
