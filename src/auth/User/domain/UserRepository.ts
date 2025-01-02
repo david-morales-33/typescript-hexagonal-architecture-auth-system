@@ -1,7 +1,7 @@
+import { CredentialsEmail } from "../../Credentials/domain/CredentialsEmail";
 import { User } from "./User";
-import { UserEmail } from "./UserEmail";
 
 export interface UserRepository {
-    find(userId: UserEmail): Promise<User | null>;
+    find(userId: CredentialsEmail): Promise<User | null>;
     save(user: User): Promise<void>;
 }

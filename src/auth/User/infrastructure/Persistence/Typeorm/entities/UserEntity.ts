@@ -27,7 +27,7 @@ export const UserEntity = new EntitySchema<User>({
     },
     relations: {
         roleList: {
-            type: 'one-to-many',
+            type: 'many-to-many',
             target: RoleEntity
         }
     }
