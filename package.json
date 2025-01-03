@@ -3,13 +3,15 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "entities-test": "ts-node test/entities.test.ts"
   },
   "author": "David Esteban Morales",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "mssql": "^10.0.4",
+    "ts-node": "^10.9.2",
     "typeorm": "^0.3.20",
     "uuid": "^11.0.3",
     "uuid-validate": "^0.0.3"

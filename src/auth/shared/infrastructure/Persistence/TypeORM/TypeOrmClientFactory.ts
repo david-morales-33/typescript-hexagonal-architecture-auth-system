@@ -1,8 +1,10 @@
 import { DataSource } from 'typeorm';
 import { TypeOrmConfig } from './TypeOrmConfig';
+import { UserEntity } from '../../../../User/infrastructure/Persistence/Typeorm/entities/UserEntity';
+import { RoleEntity } from '../../../../User/infrastructure/Persistence/Typeorm/entities/RoleEntity';
 
 export class TypeOrmClientFactory {
-    static async createClient(config: TypeOrmConfig): Promise<DataSource> {
+    static createClient(config: TypeOrmConfig): DataSource {
         try {
             const connection = new DataSource({
                 name: 'authentication',
@@ -12,9 +14,14 @@ export class TypeOrmClientFactory {
                 username: config.username,
                 password: config.password,
                 database: config.database,
-                entities: [__dirname + '/../../../../User/infrastructure/Persistence/Typeorm/entities/*{.js,.ts}']
+                options: {
+                    encrypt: true,
+                    trustServerCertificate: true
+                },
+                entities: [UserEntity, RoleEntity],
+                synchronize: true
             });
-            return await connection.initialize();
+            return connection;
         } catch (error) {
             throw new Error('Data base connection faild: ' + error)
         }
