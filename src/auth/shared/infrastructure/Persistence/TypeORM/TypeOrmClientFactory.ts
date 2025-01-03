@@ -1,7 +1,5 @@
 import { DataSource } from 'typeorm';
 import { TypeOrmConfig } from './TypeOrmConfig';
-import { UserEntity } from '../../../../User/infrastructure/Persistence/Typeorm/entities/UserEntity';
-import { RoleEntity } from '../../../../User/infrastructure/Persistence/Typeorm/entities/RoleEntity';
 
 export class TypeOrmClientFactory {
     static createClient(config: TypeOrmConfig): DataSource {
@@ -18,8 +16,8 @@ export class TypeOrmClientFactory {
                     encrypt: true,
                     trustServerCertificate: true
                 },
-                entities: [UserEntity, RoleEntity],
-                synchronize: true
+                entities: [],
+                synchronize: true,
             });
             return connection;
         } catch (error) {
