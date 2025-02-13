@@ -1,5 +1,5 @@
 import { DataSource, EntitySchema, Repository } from 'typeorm';
-import { EntityRoot } from '../../../domain/EntityRoot';
+import { EntityRoot } from '../../../domain/interfaces/EntityRoot';
 
 export abstract class TypeOrmRepository<T extends EntityRoot> {
     constructor(private _client: Promise<DataSource>) { }
