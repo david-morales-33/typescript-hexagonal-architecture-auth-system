@@ -1,0 +1,11 @@
+services:
+  Auth.Shared.TypeOrmConfigFactory:
+    factory:
+      class: ../../../auth/shared/infrastructure/Persistence/TypeORM/TypeOrmConfigFactory
+      method: 'createConfig'
+
+  Auth.Shared.TypeOrmClientFactory:
+    factory:
+      class: ../../../auth/shared/infrastructure/Persistence/TypeORM/TypeOrmClientFactory
+      method: 'createClient'
+    arguments: ['@Auth.Shared.TypeOrmConfigFactory']

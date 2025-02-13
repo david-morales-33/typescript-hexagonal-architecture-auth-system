@@ -1,24 +1,12 @@
-
-
-import { TypeOrmClientFactory } from "../src/auth/Shared/infrastructure/Persistence/TypeORM/TypeOrmClientFactory";
+import { containerPromise } from "../src/server/dependency-injection";
 
 async function main() {
-    const connection = TypeOrmClientFactory.createClient({
-        database: 'gestion_autenticacion_typeorm',
-        username: 'sa',
-        host: 'localhost',
-        password: 'Sistemas-2020',
-        port: 1433
-    });
     try {
-
+       const container = await containerPromise;
+       const ent = container.get('Auth.Shared.TypeOrmClientFactory');
+       console.log(ent) 
     } catch (error) {
         console.log(error);
     }
-    finally {
-        connection.destroy()
-    }
-
 }
-
 main();

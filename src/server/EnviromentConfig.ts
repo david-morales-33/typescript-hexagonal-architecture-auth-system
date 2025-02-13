@@ -5,28 +5,20 @@ const envPath = path.join(__dirname, '../..', '.env');
 envPath ? dotenv.config({ path: envPath }) : dotenv.config()
 
 export class EnviromentConfig {
-
-    public readonly SERVER_PORT: string;
-    public readonly DB_PORT: string;
-    public readonly DB_HOST: string;
-    public readonly DB_USER: string;
-    public readonly DB_PASSWORD: string;
-    public readonly DB_DATABASE: string;
-
-    constructor() {
-        this.SERVER_PORT = this.envValueValidator('SERVER_PORT');
-        this.DB_PORT = this.envValueValidator('DB_PORT');
-        this.DB_HOST = this.envValueValidator('DB_HOST');
-        this.DB_USER = this.envValueValidator('DB_USER');
-        this.DB_PASSWORD = this.envValueValidator('DB_PASSWORD');
-        this.DB_DATABASE = this.envValueValidator('DB_DATABASE');
+    public static createEnvConfig() {
+        return {
+            SERVER_PORT: EnviromentConfig.envValueValidator('SERVER_PORT'),
+            DB_PORT: EnviromentConfig.envValueValidator('DB_PORT'),
+            DB_HOST: EnviromentConfig.envValueValidator('DB_HOST'),
+            DB_USER: EnviromentConfig.envValueValidator('DB_USER'),
+            DB_PASSWORD: EnviromentConfig.envValueValidator('DB_PASSWORD'),
+            DB_DATABASE: EnviromentConfig.envValueValidator('DB_DATABASE')
+        }
     }
-
-    protected envValueValidator(name: string): string {
+    private static envValueValidator(name: string): string {
         const value = process.env[name]
         if (!value)
             throw new Error(`La variable de entorno ${name}, no fue proporcionada`)
         return value;
     }
 }
-
